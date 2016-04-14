@@ -11,5 +11,8 @@ rotate 4
 # create new (empty) log files after rotating old ones
 create
 
+# su to appropriate user/group
+su <%= @user %> <%= @group %>
+
 # packages drop log rotation information into this directory
 include /etc/logrotate.d

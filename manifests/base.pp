@@ -14,11 +14,25 @@ class logrotate::base {
     require => Package['logrotate'],
   }
 
+  case $::osfamily {
+    'Suse': {
+      $user = 'root'
+      $group = 'root'
+    }
+    'Debian': {
+      $user = 'root'
+      $group = 'syslog'
+    }
+    default: {
+      fail('osfamily not supported')
+    }
+  }
+
   file {
     '/etc/logrotate.conf':
       ensure  => file,
       mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
+      content => template('logrotate/etc/logrotate.conf.erb');
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755';
